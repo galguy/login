@@ -1,14 +1,68 @@
 <head>
-  <title>login</title>
+    <title>Seizure Log</title>
 </head>
-
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+{{#if currentUser}}
+    {{> dashboard}}
+    <u>Time of last seizure insert:</u>
+    <div id="timeOfSeizer"></div>
+    <ul>
+        {{#each seizers}}
+            {{> seizer}}
+        {{/each}}
+    </ul>
+{{else}}
+    {{> login}}
+{{/if}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="dashboard">
+    <p>You're logged in.</p>
+    <p><a href="#" class="logout">Logout</a></p>
+    <div class="container">
+        <header>
+            <h1>Seizure Log App</h1><br>
+            <h2>(ver 0.5)</h2>
+
+            <form class="new-task">
+                <u>Duration:</u>
+                <input type="radio" name="duration" value="short" checked> short
+                <input type="radio" name="duration" value="long"> long <br>
+
+                <br> <u>Context:</u>
+                <input type="radio" name="context" value="not-lost" checked> Didn't Lost Context
+                <input type="radio" name="context" value="lost" > Lost Context <br>
+                <br><br>
+                <u>Comment:</u>
+                <input type="text" name="comment">
+                <br>
+                <br><br>
+                <input type="submit" value="Submit" onclick="setTimeOfSeizer">
+            </form>
+        </header>
+    </div>
+    <br>
+</template>
+
+<template name="register">
+    <form>
+        <input type="email" name="registerEmail">
+        <input type="password" name="registerPassword">
+        <input type="submit" value="Register">
+    </form>
+</template>
+
+<template name="login">
+    <form>
+        <input type="email" name="loginEmail">
+        <input type="password" name="loginPassword">
+        <input type="submit" value="Login">
+    </form>
+</template>
+
+<template name="seizer">
+    <li class="{{#if checked}}checked{{/if}}">
+        <button class="delete">&times;</button>
+        Time:<b>{{formatDate createdAt}}</b>, Duration:<b>{{duration}}</b>, Context:<b>{{context}}</b>, Comment:{{comment}}
+    </li>
 </template>
